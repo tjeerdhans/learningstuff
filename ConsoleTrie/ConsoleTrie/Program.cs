@@ -8,18 +8,31 @@ namespace ConsoleTrie
         {
             Console.WriteLine("Hello World!");
 
-            BstTests();
+            //BstTests();
             TrieTests();
         }
 
         static void TrieTests()
         {
             var trie = TrieFactory.MakeWikipediaTrie();
-            trie.Traverse();
+            trie.Traverse(false);
             Console.WriteLine();
             Console.WriteLine($"Looking up value of 'tea': {trie.Lookup("tea")}");
             Console.WriteLine($"Looking up value of 'i': {trie.Lookup("i")}");
             Console.WriteLine($"Looking up value of 'teapot': {trie.Lookup("teapot")?.ToString() ?? "null"}");
+            Console.WriteLine("Deleting 'i'..");
+            trie.Delete("i");            
+            trie.Traverse();
+            Console.WriteLine();
+            Console.WriteLine("Deleting 'A'..");
+            trie.Delete("A");            
+            trie.Traverse();
+            Console.WriteLine();
+            Console.WriteLine("Deleting nonexistent 'Be'..");
+            trie.Delete("A");            
+            trie.Traverse();
+            Console.WriteLine();
+            
         }
 
         static void BstTests()

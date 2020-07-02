@@ -6,7 +6,7 @@
         {
             var trie = new TrieNode();
             trie.Insert("t", null);
-            trie.Insert("A", null);
+            trie.Insert("A", 15);
             trie.Insert("i", 11);
             trie.Insert("to", 7);
             trie.Insert("te", null);

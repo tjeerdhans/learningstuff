@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 
 namespace ConsoleTrie
@@ -61,6 +60,32 @@ namespace ConsoleTrie
             node.Insert(key, value);
         }
 
+        public void Delete(string key)
+        {
+            if (Children.ContainsKey(key))
+            {
+                var childMatch = Children[key];
+                if (!childMatch.Children.Any())
+                {
+                    Children.Remove(key); // remove the match
+                }
+                else
+                {
+                    childMatch.Value = null; // there's descendant keys, just set the value to null
+                }
+
+                return;
+            }
+
+            var prefix = Children.Keys.FirstOrDefault(key.StartsWith);
+            if (prefix == null)
+            {
+                return; // nothing to be done, the key isn't in the trie.
+            }
+
+            Children[prefix].Delete(key);
+        }
+
         public int? Lookup(string key)
         {
             if (Key == key)
@@ -77,12 +102,20 @@ namespace ConsoleTrie
             return Children[prefix].Lookup(key);
         }
 
-        public void Traverse()
+        public void Traverse(bool onlyKeysWithValues = true)
         {
-            Console.Write($"{Key} ");
+            if (!onlyKeysWithValues)
+            {
+                Console.Write($"{Key} ");
+            }
+            else if (Value.HasValue)
+            {
+                Console.Write($"{Key} ");
+            }
+
             foreach (var (_, node) in Children)
             {
-                node.Traverse();
+                node.Traverse(onlyKeysWithValues);
             }
         }
     }
